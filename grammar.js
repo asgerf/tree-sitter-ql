@@ -19,7 +19,7 @@ module.exports = grammar({
   word: $ => $._lower_id,
 
   rules: {
-    ql: $ => repeat($._moduleMember),
+    ql: $ => repeat(field("member", $._moduleMember)),
 
     module: $ => seq(
       'module',
@@ -48,58 +48,61 @@ module.exports = grammar({
 
     importDirective: $ => seq(
       'import',
-      field("expr", $.importModuleExpr),
+      field("moduleExpr", $.importModuleExpr),
       optional(seq('as', field("name", $.moduleName)))
     ),
 
-    moduleAliasBody: $ => seq($.eq, field("expr", $.moduleExpr), ";"),
-    predicateAliasBody: $ => seq($.eq, field("expr", $.predicateExpr), ";"),
-    typeAliasBody: $ => seq($.eq, field("expr", $.typeExpr), ";"),
-    typeUnionBody: $ => seq($.eq, $.typeExpr, "or", sep($.typeExpr, "or"), ";"),
+    moduleAliasBody: $ => seq($.eq, field("moduleExpr", $.moduleExpr), ";"),
+    predicateAliasBody: $ => seq($.eq, field("predicateExpr", $.predicateExpr), ";"),
+    typeAliasBody: $ => seq($.eq, field("type", $.typeExpr), ";"),
+    typeUnionBody: $ => seq($.eq, field("type", $.typeExpr), "or", sep(field("type", $.typeExpr), "or"), ";"),
 
     classlessPredicate: $ => seq(
       field("returnType", choice($.predicate, $.typeExpr)),
       field("name", $.predicateName),
       choice(
-        seq("(", sep($.varDecl, ","), ")", $._optbody),
-        $.predicateAliasBody
+        seq("(", sep(field("parameter", $.varDecl), ","), ")", field("body", $._optbody)),
+        field("body", $.predicateAliasBody)
       )
     ),
-
+  
     datatype: $ => seq(
       'newtype',
       field("name", $.className),
       $.eq,
-      $.datatypeBranches
+      $._datatypeBranches
     ),
 
-    datatypeBranches: $ => sep1($.datatypeBranch, "or"),
+    _datatypeBranches: $ => sep1(field("branch", $.datatypeBranch), "or"),
 
     datatypeBranch: $ => seq(
-      optional($.qldoc),
-      optional($.annotation),
+      optional(field("qldoc", $.qldoc)),
+      optional(field("annotation", $.annotation)),
       field("name", $.className),
       "(",
-      sep($.varDecl, ","),
+      sep(field("parameter", $.varDecl), ","),
       ")",
-      optional($.body)
+      optional(field("body", $.body))
     ),
 
     select: $ => seq(
-      optional(seq("from", sep($.varDecl, ","))),
-      optional(seq("where", $._exprOrTerm)),
-      seq('select', $.asExprs, optional($.orderBys))
+      optional(seq("from", sep(field("parameter", $.varDecl), ","))),
+      optional(seq("where", field("where", $._exprOrTerm))),
+      seq('select', sep1(field("select", $.asExpr), ",")),
+      optional($._orderBys)
     ),
 
     dataclass: $ => seq(
       'class',
       field("name", $.className),
-      choice(
-        seq('extends', sep1($.typeExpr, ","), "{", repeat($._classMember), "}"),
+      field("body", choice(
+        $.dataclassBody,
         $.typeAliasBody,
         $.typeUnionBody
-      )
+      ))
     ),
+
+    dataclassBody: $ => seq('extends', sep1(field("baseType", $.typeExpr), ","), "{", repeat(field("member", $._classMember)), "}"),
 
     _classMember: $ => choice(
       $.classMember,
@@ -107,11 +110,11 @@ module.exports = grammar({
     ),
 
     classMember: $ => seq(
-      repeat($.annotation),
-      choice($.charpred, $.memberPredicate, $.field)
+      repeat(field("annotation", $.annotation)),
+      field("member", choice($.charpred, $.memberPredicate, $.field))
     ),
 
-    charpred: $ => seq($.className, "(", ")", "{", $._exprOrTerm, "}"),
+    charpred: $ => seq(field("name", $.className), "(", ")", "{", field("body", $._exprOrTerm), "}"),
 
     memberPredicate: $ => seq(
       field("returnType", choice($.predicate, $.typeExpr)),
@@ -122,7 +125,7 @@ module.exports = grammar({
       $._optbody
     ),
 
-    field: $ => seq($.varDecl, ";"),
+    field: $ => seq(field("varDecl", $.varDecl), ";"),
 
     _optbody: $ => choice(
       $.empty,
@@ -132,22 +135,22 @@ module.exports = grammar({
 
     empty: $ => ";",
 
-    body: $ => seq("{", $._exprOrTerm, "}"),
+    body: $ => seq("{", field("term", $._exprOrTerm), "}"),
 
     higherOrderTerm: $ => seq(
       $.eq,
       field("name", $.literalId),
       "(",
-      sep($.predicateExpr, ","),
+      sep(field("predicateExpr", $.predicateExpr), ","),
       ")",
       "(",
-      sep($._call_arg, ","),
+      sep(field("arg", $._call_arg), ","),
       ")"
     ),
 
-    special_call: $ => seq($.specialId, "(", ")"),
-    prefix_cast: $ => prec.dynamic(10, seq("(", $.typeExpr, ")", $._exprOrTerm)),
-    unary_expr: $ => seq($.unop, $._exprOrTerm),
+    special_call: $ => seq(field("id", $.specialId), "(", ")"),
+    prefix_cast: $ => prec.dynamic(10, seq("(", field("type", $.typeExpr), ")", field("expr", $._exprOrTerm))),
+    unary_expr: $ => seq(field("operator", $.unop), field("expr", $._exprOrTerm)),
     mul_expr: $ => prec.left(9, seq(
       field('left', $._exprOrTerm),
       $.mulop,
@@ -168,8 +171,12 @@ module.exports = grammar({
       $.compop,
       field('right', $._exprOrTerm)
     )),
-    instance_of: $ => prec.left(5, seq($._exprOrTerm, 'instanceof', $.typeExpr)),
-    negation: $ => prec.left(4, seq('not', $._exprOrTerm)),
+    instance_of: $ => prec.left(5, seq(
+      field('expr', $._exprOrTerm),
+      'instanceof',
+      field('type', $.typeExpr)
+    )),
+    negation: $ => prec.left(4, seq('not', field('expr', $._exprOrTerm))),
     if_term: $ => prec.left(3, seq(
       "if", field('cond', $._exprOrTerm),
       "then", field('first', $._exprOrTerm),
@@ -191,19 +198,21 @@ module.exports = grammar({
       field('right', $._exprOrTerm)
     )),
 
-    quantified: $ => seq($.quantifier, "(",
+    quantified: $ => seq(
+      field("quantifier", $._quantifier),
+      "(",
       choice(
         seq(
-          sep($.varDecl, ","),
-          optional(seq("|", $._exprOrTerm, optional(seq("|", $._exprOrTerm))))
+          sep(field("varDecl", $.varDecl), ","),
+          optional(seq("|", field("term", $._exprOrTerm), optional(seq("|", field("term", $._exprOrTerm)))))
         ),
-        $._exprOrTerm
+        field("term", $._exprOrTerm)
       ),
       ")"),
-
+    
     specialId: $ => 'none',
 
-    quantifier: $ => choice('exists', 'forall', 'forex'),
+    _quantifier: $ => choice('exists', 'forall', 'forex'),
 
     _call_arg: $ => choice(
       $._exprOrTerm,  // ExprArg
@@ -241,13 +250,13 @@ module.exports = grammar({
         seq(
           "|",
           optional($._exprOrTerm),
-          optional(seq("|", $.asExprs, optional($.orderBys)))
+          optional(seq("|", $.asExprs, optional($._orderBys)))
         )
       ),
       sep1($.varDecl, ","),
       ),
 
-    expr_aggregate_body: $ => seq($.asExprs, optional($.orderBys)),
+    expr_aggregate_body: $ => seq($.asExprs, optional($._orderBys)),
 
     aggregate: $ => seq($.aggId,                                                                // Agg
       optional(
@@ -333,7 +342,7 @@ module.exports = grammar({
 
     asExpr: $ => seq($._exprOrTerm, optional(seq('as', $.varName))),
 
-    orderBys: $ => seq("order", "by", sep1($.orderBy, ",")),
+    _orderBys: $ => seq("order", "by", sep1(field("orderBy", $.orderBy), ",")),
 
     orderBy: $ => seq($._exprOrTerm, optional($.direction)),
 
