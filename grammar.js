@@ -12,6 +12,10 @@ module.exports = grammar({
     $.block_comment,
   ],
 
+  supertypes: $ => [
+    $._exprOrTerm
+  ],
+
   word: $ => $._lower_id,
 
   rules: {

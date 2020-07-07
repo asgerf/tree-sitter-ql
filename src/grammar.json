@@ -2990,6 +2990,8 @@
   ],
   "externals": [],
   "inline": [],
-  "supertypes": []
+  "supertypes": [
+    "_exprOrTerm"
+  ]
 }
 
