@@ -137,8 +137,12 @@
           "value": "import"
         },
         {
-          "type": "SYMBOL",
-          "name": "importModuleExpr"
+          "type": "FIELD",
+          "name": "expr",
+          "content": {
+            "type": "SYMBOL",
+            "name": "importModuleExpr"
+          }
         },
         {
           "type": "CHOICE",
@@ -151,8 +155,12 @@
                   "value": "as"
                 },
                 {
-                  "type": "SYMBOL",
-                  "name": "moduleName"
+                  "type": "FIELD",
+                  "name": "name",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "moduleName"
+                  }
                 }
               ]
             },
@@ -171,8 +179,12 @@
           "name": "eq"
         },
         {
-          "type": "SYMBOL",
-          "name": "moduleExpr"
+          "type": "FIELD",
+          "name": "expr",
+          "content": {
+            "type": "SYMBOL",
+            "name": "moduleExpr"
+          }
         },
         {
           "type": "STRING",
@@ -188,8 +200,12 @@
           "name": "eq"
         },
         {
-          "type": "SYMBOL",
-          "name": "predicateExpr"
+          "type": "FIELD",
+          "name": "expr",
+          "content": {
+            "type": "SYMBOL",
+            "name": "predicateExpr"
+          }
         },
         {
           "type": "STRING",
@@ -205,8 +221,12 @@
           "name": "eq"
         },
         {
-          "type": "SYMBOL",
-          "name": "typeExpr"
+          "type": "FIELD",
+          "name": "expr",
+          "content": {
+            "type": "SYMBOL",
+            "name": "typeExpr"
+          }
         },
         {
           "type": "STRING",
@@ -2567,8 +2587,12 @@
       ]
     },
     "moduleName": {
-      "type": "SYMBOL",
-      "name": "simpleId"
+      "type": "FIELD",
+      "name": "name",
+      "content": {
+        "type": "SYMBOL",
+        "name": "simpleId"
+      }
     },
     "qualModuleExpr": {
       "type": "SEQ",
@@ -2607,8 +2631,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "qualModuleExpr"
+          "type": "FIELD",
+          "name": "qualifier",
+          "content": {
+            "type": "SYMBOL",
+            "name": "qualModuleExpr"
+          }
         },
         {
           "type": "REPEAT",

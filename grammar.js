@@ -48,13 +48,13 @@ module.exports = grammar({
 
     importDirective: $ => seq(
       'import',
-      $.importModuleExpr,
-      optional(seq('as', $.moduleName))
+      field("expr", $.importModuleExpr),
+      optional(seq('as', field("name", $.moduleName)))
     ),
 
-    moduleAliasBody: $ => seq($.eq, $.moduleExpr, ";"),
-    predicateAliasBody: $ => seq($.eq, $.predicateExpr, ";"),
-    typeAliasBody: $ => seq($.eq, $.typeExpr, ";"),
+    moduleAliasBody: $ => seq($.eq, field("expr", $.moduleExpr), ";"),
+    predicateAliasBody: $ => seq($.eq, field("expr", $.predicateExpr), ";"),
+    typeAliasBody: $ => seq($.eq, field("expr", $.typeExpr), ";"),
     typeUnionBody: $ => seq($.eq, $.typeExpr, "or", sep($.typeExpr, "or"), ";"),
 
     classlessPredicate: $ => seq(
@@ -355,11 +355,11 @@ module.exports = grammar({
 
     annotArg: $ => choice($.simpleId, $.this, $.result),
 
-    moduleName: $ => $.simpleId,
+    moduleName: $ => field("name", $.simpleId),
 
     qualModuleExpr: $ => sep1(field("name", $.simpleId), "."),
 
-    importModuleExpr: $ => seq($.qualModuleExpr, repeat(seq("::", field("name", $.simpleId)))),
+    importModuleExpr: $ => seq(field("qualifier", $.qualModuleExpr), repeat(seq("::", field("name", $.simpleId)))),
 
     moduleExpr: $ => choice($.simpleId, seq($.moduleExpr, "::", field("name", $.simpleId))),
 
