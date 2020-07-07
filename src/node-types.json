@@ -216,14 +216,10 @@
     "type": "annotation",
     "named": true,
     "fields": {
-      "args": {
+      "arg": {
         "multiple": true,
         "required": false,
         "types": [
-          {
-            "type": ",",
-            "named": false
-          },
           {
             "type": "annotArg",
             "named": true

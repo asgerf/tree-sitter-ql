@@ -346,7 +346,7 @@ module.exports = grammar({
       seq( // ArgsAnnotation
         field('name', $.annotName),
         "[",
-        field('args', sep1($.annotArg, ",")),
+        sep1(field('arg', $.annotArg), ","),
         "]"
       )
     ),
