@@ -942,10 +942,6 @@
         {
           "type": "memberPredicate",
           "named": true
-        },
-        {
-          "type": "qldoc",
-          "named": true
         }
       ]
     }
@@ -1500,6 +1496,10 @@
       "types": [
         {
           "type": "classMember",
+          "named": true
+        },
+        {
+          "type": "qldoc",
           "named": true
         },
         {
@@ -2943,6 +2943,20 @@
     "type": "module",
     "named": true,
     "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "moduleAliasBody",
+            "named": true
+          },
+          {
+            "type": "moduleBody",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
@@ -2953,20 +2967,6 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "moduleAliasBody",
-          "named": true
-        },
-        {
-          "type": "moduleMember",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -2986,6 +2986,26 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "moduleBody",
+    "named": true,
+    "fields": {
+      "body": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "moduleMember",
+            "named": true
+          },
+          {
+            "type": "qldoc",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -3021,44 +3041,47 @@
   {
     "type": "moduleMember",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "annotation",
-          "named": true
-        },
-        {
-          "type": "classlessPredicate",
-          "named": true
-        },
-        {
-          "type": "dataclass",
-          "named": true
-        },
-        {
-          "type": "datatype",
-          "named": true
-        },
-        {
-          "type": "importDirective",
-          "named": true
-        },
-        {
-          "type": "module",
-          "named": true
-        },
-        {
-          "type": "qldoc",
-          "named": true
-        },
-        {
-          "type": "select",
-          "named": true
-        }
-      ]
+    "fields": {
+      "annotation": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "annotation",
+            "named": true
+          }
+        ]
+      },
+      "member": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "classlessPredicate",
+            "named": true
+          },
+          {
+            "type": "dataclass",
+            "named": true
+          },
+          {
+            "type": "datatype",
+            "named": true
+          },
+          {
+            "type": "importDirective",
+            "named": true
+          },
+          {
+            "type": "module",
+            "named": true
+          },
+          {
+            "type": "select",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -3808,6 +3831,10 @@
       "types": [
         {
           "type": "moduleMember",
+          "named": true
+        },
+        {
+          "type": "qldoc",
           "named": true
         }
       ]

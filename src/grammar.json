@@ -6,7 +6,7 @@
       "type": "REPEAT",
       "content": {
         "type": "SYMBOL",
-        "name": "moduleMember"
+        "name": "_moduleMember"
       }
     },
     "module": {
@@ -25,83 +25,107 @@
           }
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "{"
-                },
-                {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "moduleMember"
-                  }
-                },
-                {
-                  "type": "STRING",
-                  "value": "}"
-                }
-              ]
-            },
-            {
-              "type": "SYMBOL",
-              "name": "moduleAliasBody"
-            }
-          ]
+          "type": "FIELD",
+          "name": "body",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "moduleBody"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "moduleAliasBody"
+              }
+            ]
+          }
         }
       ]
     },
-    "moduleMember": {
+    "moduleBody": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "FIELD",
+            "name": "body",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_moduleMember"
+            }
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "_moduleMember": {
       "type": "CHOICE",
       "members": [
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "REPEAT",
-              "content": {
-                "type": "SYMBOL",
-                "name": "annotation"
-              }
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "importDirective"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "classlessPredicate"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "dataclass"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "datatype"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "select"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "module"
-                }
-              ]
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "moduleMember"
         },
         {
           "type": "SYMBOL",
           "name": "qldoc"
+        }
+      ]
+    },
+    "moduleMember": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "FIELD",
+            "name": "annotation",
+            "content": {
+              "type": "SYMBOL",
+              "name": "annotation"
+            }
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "member",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "importDirective"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "classlessPredicate"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "dataclass"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "datatype"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "select"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "module"
+              }
+            ]
+          }
         }
       ]
     },
@@ -632,7 +656,7 @@
                   "type": "REPEAT",
                   "content": {
                     "type": "SYMBOL",
-                    "name": "classMember"
+                    "name": "_classMember"
                   }
                 },
                 {
@@ -653,41 +677,45 @@
         }
       ]
     },
-    "classMember": {
+    "_classMember": {
       "type": "CHOICE",
       "members": [
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "REPEAT",
-              "content": {
-                "type": "SYMBOL",
-                "name": "annotation"
-              }
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "charpred"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "memberPredicate"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "field"
-                }
-              ]
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "classMember"
         },
         {
           "type": "SYMBOL",
           "name": "qldoc"
+        }
+      ]
+    },
+    "classMember": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "annotation"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "charpred"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "memberPredicate"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "field"
+            }
+          ]
         }
       ]
     },

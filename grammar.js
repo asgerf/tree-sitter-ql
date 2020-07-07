@@ -15,27 +15,31 @@ module.exports = grammar({
   word: $ => $._lower_id,
 
   rules: {
-    ql: $ => repeat($.moduleMember),
+    ql: $ => repeat($._moduleMember),
 
     module: $ => seq(
       'module',
       field("name", $.moduleName),
-      choice(
-        seq(
-          "{",
-          repeat($.moduleMember),
-          "}"
-        ),
+      field("body", choice(
+        $.moduleBody,
         $.moduleAliasBody
-      )
+      ))
     ),
 
-    moduleMember: $ => choice(
-      seq(
-        repeat($.annotation),
-        choice($.importDirective, $.classlessPredicate, $.dataclass, $.datatype, $.select, $.module)
-      ),
+    moduleBody: $ => seq(
+      "{",
+      repeat(field("body", $._moduleMember)),
+      "}"
+    ),
+
+    _moduleMember: $ => choice(
+      $.moduleMember,
       $.qldoc
+    ),
+
+    moduleMember: $ => seq(
+      repeat(field("annotation", $.annotation)),
+      field("member", choice($.importDirective, $.classlessPredicate, $.dataclass, $.datatype, $.select, $.module))
     ),
 
     importDirective: $ => seq(
@@ -87,18 +91,20 @@ module.exports = grammar({
       'class',
       field("name", $.className),
       choice(
-        seq('extends', sep1($.typeExpr, ","), "{", repeat($.classMember), "}"),
+        seq('extends', sep1($.typeExpr, ","), "{", repeat($._classMember), "}"),
         $.typeAliasBody,
         $.typeUnionBody
       )
     ),
 
-    classMember: $ => choice(
-      seq(
-        repeat($.annotation),
-        choice($.charpred, $.memberPredicate, $.field)
-      ),
+    _classMember: $ => choice(
+      $.classMember,
       $.qldoc
+    ),
+
+    classMember: $ => seq(
+      repeat($.annotation),
+      choice($.charpred, $.memberPredicate, $.field)
     ),
 
     charpred: $ => seq($.className, "(", ")", "{", $._exprOrTerm, "}"),
