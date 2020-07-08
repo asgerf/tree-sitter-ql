@@ -1229,7 +1229,20 @@
         }
       ]
     },
-    "mul_expr": {
+    "binary_expr": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_mul_expr"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_add_expr"
+        }
+      ]
+    },
+    "_mul_expr": {
       "type": "PREC_LEFT",
       "value": 9,
       "content": {
@@ -1244,8 +1257,12 @@
             }
           },
           {
-            "type": "SYMBOL",
-            "name": "mulop"
+            "type": "FIELD",
+            "name": "operator",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_mulop"
+            }
           },
           {
             "type": "FIELD",
@@ -1258,7 +1275,7 @@
         ]
       }
     },
-    "add_expr": {
+    "_add_expr": {
       "type": "PREC_LEFT",
       "value": 8,
       "content": {
@@ -1273,8 +1290,12 @@
             }
           },
           {
-            "type": "SYMBOL",
-            "name": "addop"
+            "type": "FIELD",
+            "name": "operator",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_addop"
+            }
           },
           {
             "type": "FIELD",
@@ -1331,8 +1352,12 @@
             }
           },
           {
-            "type": "SYMBOL",
-            "name": "compop"
+            "type": "FIELD",
+            "name": "operator",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_compop"
+            }
           },
           {
             "type": "FIELD",
@@ -2341,11 +2366,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "mul_expr"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "add_expr"
+          "name": "binary_expr"
         },
         {
           "type": "SYMBOL",
@@ -2477,7 +2498,7 @@
         }
       ]
     },
-    "compop": {
+    "_compop": {
       "type": "CHOICE",
       "members": [
         {
@@ -2519,7 +2540,7 @@
         }
       ]
     },
-    "mulop": {
+    "_mulop": {
       "type": "CHOICE",
       "members": [
         {
@@ -2536,7 +2557,7 @@
         }
       ]
     },
-    "addop": {
+    "_addop": {
       "type": "CHOICE",
       "members": [
         {

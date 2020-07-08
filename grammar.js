@@ -151,14 +151,18 @@ module.exports = grammar({
     special_call: $ => seq(field("id", $.specialId), "(", ")"),
     prefix_cast: $ => prec.dynamic(10, seq("(", field("type", $.typeExpr), ")", field("expr", $._exprOrTerm))),
     unary_expr: $ => seq(field("operator", $.unop), field("expr", $._exprOrTerm)),
-    mul_expr: $ => prec.left(9, seq(
+    binary_expr: $ => choice(
+      $._mul_expr,
+      $._add_expr,
+    ),
+    _mul_expr: $ => prec.left(9, seq(
       field('left', $._exprOrTerm),
-      $.mulop,
+      field('operator', $._mulop),
       field('right', $._exprOrTerm)
     )),
-    add_expr: $ => prec.left(8, seq(
+    _add_expr: $ => prec.left(8, seq(
       field('left', $._exprOrTerm),
-      $.addop,
+      field('operator', $._addop),
       field('right', $._exprOrTerm)
     )),
     in_expr: $ => prec.left(7, seq(
@@ -168,7 +172,7 @@ module.exports = grammar({
     )),
     comp_term: $ => prec.left(6, seq(
       field('left', $._exprOrTerm),
-      $.compop,
+      field('operator', $._compop),
       field('right', $._exprOrTerm)
     )),
     instance_of: $ => prec.left(5, seq(
@@ -287,8 +291,7 @@ module.exports = grammar({
       $.prefix_cast,
       $._primary,
       $.unary_expr,
-      $.mul_expr,
-      $.add_expr,
+      $.binary_expr,
       $.in_expr,
       $.comp_term,
       $.instance_of,
@@ -324,13 +327,13 @@ module.exports = grammar({
 
     variable: $ => choice($.this, $.result, $.varName),
 
-    compop: $ => choice($.eq, $.ne, $.lt, $.gt, $.le, $.ge),
+    _compop: $ => choice($.eq, $.ne, $.lt, $.gt, $.le, $.ge),
 
     unop: $ => choice($.plus, $.minus),
 
-    mulop: $ => choice($.star, $.slash, $.mod),
+    _mulop: $ => choice($.star, $.slash, $.mod),
 
-    addop: $ => choice($.plus, $.minus),
+    _addop: $ => choice($.plus, $.minus),
 
     closure: $ => choice($.star, $.plus),
 
