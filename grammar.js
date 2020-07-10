@@ -13,13 +13,15 @@ module.exports = grammar({
   ],
 
   supertypes: $ => [
-    $._exprOrTerm
+    $._exprOrTerm,
+    $._moduleMember,
+    $._typeExpr
   ],
 
   word: $ => $._lower_id,
 
   rules: {
-    ql: $ => repeat(field("member", $._moduleMember)),
+    ql: $ => repeat(field("member", $._moduleElement)),
 
     module: $ => seq(
       'module',
@@ -32,19 +34,21 @@ module.exports = grammar({
 
     moduleBody: $ => seq(
       "{",
-      repeat(field("body", $._moduleMember)),
+      repeat(field("body", $._moduleElement)),
       "}"
     ),
 
-    _moduleMember: $ => choice(
-      $.moduleMember,
+    _moduleElement: $ => choice(
+      $.annotatedModuleMember,
       $.qldoc
     ),
 
-    moduleMember: $ => seq(
+    annotatedModuleMember: $ => seq(
       repeat(field("annotation", $.annotation)),
-      field("member", choice($.importDirective, $.classlessPredicate, $.dataclass, $.datatype, $.select, $.module))
+      field("member", $._moduleMember)
     ),
+
+    _moduleMember: $ => choice($.importDirective, $.classlessPredicate, $.dataclass, $.datatype, $.select, $.module),
 
     importDirective: $ => seq(
       'import',
@@ -54,11 +58,11 @@ module.exports = grammar({
 
     moduleAliasBody: $ => seq($.eq, field("moduleExpr", $.moduleExpr), ";"),
     predicateAliasBody: $ => seq($.eq, field("predicateExpr", $.predicateExpr), ";"),
-    typeAliasBody: $ => seq($.eq, field("type", $.typeExpr), ";"),
-    typeUnionBody: $ => seq($.eq, field("type", $.typeExpr), "or", sep(field("type", $.typeExpr), "or"), ";"),
+    typeAliasBody: $ => seq($.eq, field("type", $._typeExpr), ";"),
+    typeUnionBody: $ => seq($.eq, field("type", $._typeExpr), "or", sep(field("type", $._typeExpr), "or"), ";"),
 
     classlessPredicate: $ => seq(
-      field("returnType", choice($.predicate, $.typeExpr)),
+      field("returnType", choice($.predicate, $._typeExpr)),
       field("name", $.predicateName),
       choice(
         seq("(", sep(field("parameter", $.varDecl), ","), ")", field("body", $._optbody)),
@@ -102,7 +106,7 @@ module.exports = grammar({
       ))
     ),
 
-    dataclassBody: $ => seq('extends', sep1(field("baseType", $.typeExpr), ","), "{", repeat(field("member", $._classMember)), "}"),
+    dataclassBody: $ => seq('extends', sep1(field("baseType", $._typeExpr), ","), "{", repeat(field("member", $._classMember)), "}"),
 
     _classMember: $ => choice(
       $.classMember,
@@ -117,7 +121,7 @@ module.exports = grammar({
     charpred: $ => seq(field("name", $.className), "(", ")", "{", field("body", $._exprOrTerm), "}"),
 
     memberPredicate: $ => seq(
-      field("returnType", choice($.predicate, $.typeExpr)),
+      field("returnType", choice($.predicate, $._typeExpr)),
       field("name", $.predicateName),
       "(",
       sep($.varDecl, ","),
@@ -149,7 +153,7 @@ module.exports = grammar({
     ),
 
     special_call: $ => seq(field("id", $.specialId), "(", ")"),
-    prefix_cast: $ => prec.dynamic(10, seq("(", field("type", $.typeExpr), ")", field("expr", $._exprOrTerm))),
+    prefix_cast: $ => prec.dynamic(10, seq("(", field("type", $._typeExpr), ")", field("expr", $._exprOrTerm))),
     unary_expr: $ => seq(field("operator", $.unop), field("expr", $._exprOrTerm)),
     binary_expr: $ => choice(
       $._mul_expr,
@@ -178,7 +182,7 @@ module.exports = grammar({
     instance_of: $ => prec.left(5, seq(
       field('expr', $._exprOrTerm),
       'instanceof',
-      field('type', $.typeExpr)
+      field('type', $._typeExpr)
     )),
     negation: $ => prec.left(4, seq('not', field('expr', $._exprOrTerm))),
     if_term: $ => prec.left(3, seq(
@@ -233,7 +237,7 @@ module.exports = grammar({
       ),
       seq( // QualCast
         "(",
-        $.typeExpr,
+        $._typeExpr,
         ")"
       )
     ),
@@ -245,7 +249,7 @@ module.exports = grammar({
 
     call_or_unqual_agg_expr: $ => prec.dynamic(10, seq($.aritylessPredicateExpr, optional($.closure), $._call_or_unqual_agg_body)),
     qualified_expr: $ => seq($._primary, ".", $.qualifiedRhs),
-    super_ref: $ => seq(optional(seq($.typeExpr, ".")), $.super),
+    super_ref: $ => seq(optional(seq($._typeExpr, ".")), $.super),
 
 
     // The split here is to ensure that the node is non-empty
@@ -339,7 +343,7 @@ module.exports = grammar({
 
     direction: $ => choice('asc', 'desc'),
 
-    varDecl: $ => seq($.typeExpr, $.varName),
+    varDecl: $ => seq($._typeExpr, $.varName),
 
     asExprs: $ => sep1($.asExpr, ","),
 
@@ -383,8 +387,10 @@ module.exports = grammar({
 
     dbtype: $ => /@[a-z][A-Za-z0-9_]*/,
 
-    typeExpr: $ => choice(
-      seq(optional(seq($.moduleExpr, "::")), field("name", $.className)),
+    namedTypeExpr: $ => seq(optional(seq(field("qualifier", $.moduleExpr), "::")), field("name", $.className)),
+
+    _typeExpr: $ => choice(
+      $.namedTypeExpr,
       $.dbtype,
       $.primitiveType
     ),
