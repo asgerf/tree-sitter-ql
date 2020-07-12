@@ -124,7 +124,7 @@ module.exports = grammar({
       field("returnType", choice($.predicate, $._typeExpr)),
       field("name", $.predicateName),
       "(",
-      sep($.varDecl, ","),
+      sep(field("parameter", $.varDecl), ","),
       ")",
       $._optbody
     ),
@@ -343,7 +343,7 @@ module.exports = grammar({
 
     direction: $ => choice('asc', 'desc'),
 
-    varDecl: $ => seq($._typeExpr, $.varName),
+    varDecl: $ => seq(field("type", $._typeExpr), field("name", $.varName)),
 
     asExprs: $ => sep1($.asExpr, ","),
 
@@ -377,7 +377,10 @@ module.exports = grammar({
 
     importModuleExpr: $ => seq(field("qualifier", $.qualModuleExpr), repeat(seq("::", field("name", $.simpleId)))),
 
-    moduleExpr: $ => choice($.simpleId, seq($.moduleExpr, "::", field("name", $.simpleId))),
+    moduleExpr: $ => choice(
+      field("name", $.simpleId),
+      seq(field("qualifier", $.moduleExpr), "::", field("name", $.simpleId))
+    ),
 
     primitiveType: $ => choice('boolean', 'date', 'float', 'int', 'string'),
 
@@ -397,9 +400,9 @@ module.exports = grammar({
 
     predicateName: $ => $._lower_id,
 
-    aritylessPredicateExpr: $ => seq(optional(seq($.moduleExpr, "::")), field("name", $.literalId)),
+    aritylessPredicateExpr: $ => seq(optional(seq(field("qualifier", $.moduleExpr), "::")), field("name", $.literalId)),
 
-    predicateExpr: $ => seq($.aritylessPredicateExpr, $.slash, $.integer),
+    predicateExpr: $ => seq(field("qualifiedName", $.aritylessPredicateExpr), $.slash, field("arity", $.integer)),
 
     varName: $ => $.simpleId,
 
