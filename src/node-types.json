@@ -4,15 +4,11 @@
     "named": true,
     "subtypes": [
       {
-        "type": "aggregate",
+        "type": "_primary",
         "named": true
       },
       {
         "type": "binary_expr",
-        "named": true
-      },
-      {
-        "type": "call_or_unqual_agg_expr",
         "named": true
       },
       {
@@ -44,15 +40,7 @@
         "named": true
       },
       {
-        "type": "literal",
-        "named": true
-      },
-      {
         "type": "negation",
-        "named": true
-      },
-      {
-        "type": "par_expr",
         "named": true
       },
       {
@@ -60,19 +48,7 @@
         "named": true
       },
       {
-        "type": "qualified_expr",
-        "named": true
-      },
-      {
         "type": "quantified",
-        "named": true
-      },
-      {
-        "type": "range",
-        "named": true
-      },
-      {
-        "type": "set_literal",
         "named": true
       },
       {
@@ -80,15 +56,7 @@
         "named": true
       },
       {
-        "type": "super_ref",
-        "named": true
-      },
-      {
         "type": "unary_expr",
-        "named": true
-      },
-      {
-        "type": "variable",
         "named": true
       }
     ]
@@ -119,6 +87,48 @@
       },
       {
         "type": "select",
+        "named": true
+      }
+    ]
+  },
+  {
+    "type": "_primary",
+    "named": true,
+    "subtypes": [
+      {
+        "type": "aggregate",
+        "named": true
+      },
+      {
+        "type": "call_or_unqual_agg_expr",
+        "named": true
+      },
+      {
+        "type": "literal",
+        "named": true
+      },
+      {
+        "type": "par_expr",
+        "named": true
+      },
+      {
+        "type": "qualified_expr",
+        "named": true
+      },
+      {
+        "type": "range",
+        "named": true
+      },
+      {
+        "type": "set_literal",
+        "named": true
+      },
+      {
+        "type": "super_ref",
+        "named": true
+      },
+      {
+        "type": "variable",
         "named": true
       }
     ]
@@ -403,20 +413,21 @@
   {
     "type": "call_body",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "_exprOrTerm",
-          "named": true
-        },
-        {
-          "type": "underscore",
-          "named": true
-        }
-      ]
+    "fields": {
+      "arg": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "_exprOrTerm",
+            "named": true
+          },
+          {
+            "type": "underscore",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1430,16 +1441,17 @@
   {
     "type": "par_expr",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "_exprOrTerm",
-          "named": true
-        }
-      ]
+    "fields": {
+      "expr": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_exprOrTerm",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1577,12 +1589,36 @@
     }
   },
   {
-    "type": "qualifiedRhs",
+    "type": "qualified_call",
     "named": true,
     "fields": {
-      "name": {
+      "arg": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "_exprOrTerm",
+            "named": true
+          },
+          {
+            "type": "underscore",
+            "named": true
+          }
+        ]
+      },
+      "closure": {
         "multiple": false,
         "required": false,
+        "types": [
+          {
+            "type": "closure",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
         "types": [
           {
             "type": "predicateName",
@@ -1590,79 +1626,52 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "_exprOrTerm",
-          "named": true
-        },
-        {
-          "type": "_typeExpr",
-          "named": true
-        },
-        {
-          "type": "closure",
-          "named": true
-        },
-        {
-          "type": "underscore",
-          "named": true
-        }
-      ]
+    }
+  },
+  {
+    "type": "qualified_cast",
+    "named": true,
+    "fields": {
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_typeExpr",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
     "type": "qualified_expr",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "aggregate",
-          "named": true
-        },
-        {
-          "type": "call_or_unqual_agg_expr",
-          "named": true
-        },
-        {
-          "type": "literal",
-          "named": true
-        },
-        {
-          "type": "par_expr",
-          "named": true
-        },
-        {
-          "type": "qualifiedRhs",
-          "named": true
-        },
-        {
-          "type": "qualified_expr",
-          "named": true
-        },
-        {
-          "type": "range",
-          "named": true
-        },
-        {
-          "type": "set_literal",
-          "named": true
-        },
-        {
-          "type": "super_ref",
-          "named": true
-        },
-        {
-          "type": "variable",
-          "named": true
-        }
-      ]
+    "fields": {
+      "lhs": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_primary",
+            "named": true
+          }
+        ]
+      },
+      "rhs": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "qualified_call",
+            "named": true
+          },
+          {
+            "type": "qualified_cast",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1820,15 +1829,22 @@
   {
     "type": "super_ref",
     "named": true,
-    "fields": {},
+    "fields": {
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "_typeExpr",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
-        {
-          "type": "_typeExpr",
-          "named": true
-        },
         {
           "type": "super",
           "named": true
@@ -2130,11 +2146,11 @@
   },
   {
     "type": "float",
-    "named": false
+    "named": true
   },
   {
     "type": "float",
-    "named": true
+    "named": false
   },
   {
     "type": "forall",

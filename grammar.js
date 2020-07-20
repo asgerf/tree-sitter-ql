@@ -13,6 +13,7 @@ module.exports = grammar({
   ],
 
   supertypes: $ => [
+    $._primary,
     $._exprOrTerm,
     $._moduleMember,
     $._typeExpr
@@ -227,29 +228,33 @@ module.exports = grammar({
       $.underscore  // DontCare
     ),
 
-    qualifiedRhs: $ => choice(
-      seq( // QualCall
-        field("name", $.predicateName),
-        optional($.closure),
-        "(",
-        sep($._call_arg, ","),
-        ")"
-      ),
-      seq( // QualCast
-        "(",
-        $._typeExpr,
-        ")"
-      )
+    qualified_call: $ => seq( // QualCall
+      field("name", $.predicateName),
+      optional(field("closure", $.closure)),
+      "(",
+      sep(field("arg", $._call_arg), ","),
+      ")"
+    ),
+  
+    qualified_cast: $ => seq( // QualCast
+      "(",
+      field("type", $._typeExpr),
+      ")"
     ),
 
-    call_body:$ => seq("(", sep($._call_arg, ","), ")"),
+    _qualifiedRhs: $ => choice(
+      $.qualified_call,
+      $.qualified_cast
+    ),
+
+    call_body:$ => seq("(", sep(field("arg", $._call_arg), ","), ")"),
     unqual_agg_body:$ => seq("(",  sep($.varDecl, ","), "|", optional($._exprOrTerm), optional(seq("|", $.asExprs)), ")"),
 
     _call_or_unqual_agg_body: $ => choice($.call_body, $.unqual_agg_body),
 
     call_or_unqual_agg_expr: $ => prec.dynamic(10, seq($.aritylessPredicateExpr, optional($.closure), $._call_or_unqual_agg_body)),
-    qualified_expr: $ => seq($._primary, ".", $.qualifiedRhs),
-    super_ref: $ => seq(optional(seq($._typeExpr, ".")), $.super),
+    qualified_expr: $ => seq(field("lhs", $._primary), ".", field("rhs", $._qualifiedRhs)),
+    super_ref: $ => seq(optional(seq(field("type", $._typeExpr), ".")), $.super),
 
 
     // The split here is to ensure that the node is non-empty
@@ -287,7 +292,7 @@ module.exports = grammar({
       "]"
     ),
 
-    par_expr: $ => seq("(", $._exprOrTerm, ")"),
+    par_expr: $ => seq("(", field("expr", $._exprOrTerm), ")"),
 
 
     _exprOrTerm: $ => choice(
