@@ -62,6 +62,28 @@
     ]
   },
   {
+    "type": "_literal",
+    "named": true,
+    "subtypes": [
+      {
+        "type": "bool",
+        "named": true
+      },
+      {
+        "type": "float",
+        "named": true
+      },
+      {
+        "type": "integer",
+        "named": true
+      },
+      {
+        "type": "string",
+        "named": true
+      }
+    ]
+  },
+  {
     "type": "_moduleMember",
     "named": true,
     "subtypes": [
@@ -96,15 +118,15 @@
     "named": true,
     "subtypes": [
       {
+        "type": "_literal",
+        "named": true
+      },
+      {
         "type": "aggregate",
         "named": true
       },
       {
         "type": "call_or_unqual_agg_expr",
-        "named": true
-      },
-      {
-        "type": "literal",
         "named": true
       },
       {
@@ -1193,33 +1215,6 @@
           }
         ]
       }
-    }
-  },
-  {
-    "type": "literal",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "bool",
-          "named": true
-        },
-        {
-          "type": "float",
-          "named": true
-        },
-        {
-          "type": "integer",
-          "named": true
-        },
-        {
-          "type": "string",
-          "named": true
-        }
-      ]
     }
   },
   {

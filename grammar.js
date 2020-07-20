@@ -16,7 +16,8 @@ module.exports = grammar({
     $._primary,
     $._exprOrTerm,
     $._moduleMember,
-    $._typeExpr
+    $._typeExpr,
+    $._literal
   ],
 
   word: $ => $._lower_id,
@@ -321,7 +322,7 @@ module.exports = grammar({
     _primary: $ => choice(
       $.call_or_unqual_agg_expr, //
       $.qualified_expr,                                        // QualifiedExpr
-      $.literal,                                                                  // Lit
+      $._literal,                                                                  // Lit
       $.variable,                                                                 // Var
       $.super_ref,
       $.aggregate,
@@ -330,7 +331,7 @@ module.exports = grammar({
       $.par_expr                                                 // ParExpr
     ),
 
-    literal: $ => choice(
+    _literal: $ => choice(
       $.integer,     // IntLit
       $.float,       // FloatLit
       $.bool,        // BoolLit
