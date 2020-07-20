@@ -252,7 +252,12 @@ module.exports = grammar({
 
     _call_or_unqual_agg_body: $ => choice($.call_body, $.unqual_agg_body),
 
-    call_or_unqual_agg_expr: $ => prec.dynamic(10, seq($.aritylessPredicateExpr, optional($.closure), $._call_or_unqual_agg_body)),
+    call_or_unqual_agg_expr: $ => prec.dynamic(10, seq(
+      field("predicate", $.aritylessPredicateExpr),
+      optional(field("closure", $.closure)),
+      field("body", $._call_or_unqual_agg_body)
+    )),
+
     qualified_expr: $ => seq(field("lhs", $._primary), ".", field("rhs", $._qualifiedRhs)),
     super_ref: $ => seq(optional(seq(field("type", $._typeExpr), ".")), $.super),
 
@@ -271,13 +276,14 @@ module.exports = grammar({
 
     expr_aggregate_body: $ => seq($.asExprs, optional($._orderBys)),
 
-    aggregate: $ => seq($.aggId,                                                                // Agg
+    aggregate: $ => seq(
+      field("name", $.aggId),                                                                // Agg
       optional(
-        seq("[", sep1($._exprOrTerm, ","), "]")
+        seq("[", sep1(field("rank", $._exprOrTerm), ","), "]")
       ),
       "(",
       optional(
-        choice($.full_aggregate_body, $.expr_aggregate_body)
+        field("body", choice($.full_aggregate_body, $.expr_aggregate_body))
       ),
       ")"
     ),
@@ -288,7 +294,7 @@ module.exports = grammar({
     ),
     set_literal: $ => seq(
       "[",
-      sep($._exprOrTerm, ','),
+      sep(field("expr", $._exprOrTerm), ','),
       "]"
     ),
 

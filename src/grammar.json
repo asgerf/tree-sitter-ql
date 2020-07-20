@@ -1997,15 +1997,23 @@
         "type": "SEQ",
         "members": [
           {
-            "type": "SYMBOL",
-            "name": "aritylessPredicateExpr"
+            "type": "FIELD",
+            "name": "predicate",
+            "content": {
+              "type": "SYMBOL",
+              "name": "aritylessPredicateExpr"
+            }
           },
           {
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "closure"
+                "type": "FIELD",
+                "name": "closure",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "closure"
+                }
               },
               {
                 "type": "BLANK"
@@ -2013,8 +2021,12 @@
             ]
           },
           {
-            "type": "SYMBOL",
-            "name": "_call_or_unqual_agg_body"
+            "type": "FIELD",
+            "name": "body",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_call_or_unqual_agg_body"
+            }
           }
         ]
       }
@@ -2225,8 +2237,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "aggId"
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "aggId"
+          }
         },
         {
           "type": "CHOICE",
@@ -2242,8 +2258,12 @@
                   "type": "SEQ",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "_exprOrTerm"
+                      "type": "FIELD",
+                      "name": "rank",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_exprOrTerm"
+                      }
                     },
                     {
                       "type": "REPEAT",
@@ -2255,8 +2275,12 @@
                             "value": ","
                           },
                           {
-                            "type": "SYMBOL",
-                            "name": "_exprOrTerm"
+                            "type": "FIELD",
+                            "name": "rank",
+                            "content": {
+                              "type": "SYMBOL",
+                              "name": "_exprOrTerm"
+                            }
                           }
                         ]
                       }
@@ -2282,17 +2306,21 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "full_aggregate_body"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "expr_aggregate_body"
-                }
-              ]
+              "type": "FIELD",
+              "name": "body",
+              "content": {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "full_aggregate_body"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "expr_aggregate_body"
+                  }
+                ]
+              }
             },
             {
               "type": "BLANK"
@@ -2352,8 +2380,12 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "SYMBOL",
-                  "name": "_exprOrTerm"
+                  "type": "FIELD",
+                  "name": "expr",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_exprOrTerm"
+                  }
                 },
                 {
                   "type": "REPEAT",
@@ -2365,8 +2397,12 @@
                         "value": ","
                       },
                       {
-                        "type": "SYMBOL",
-                        "name": "_exprOrTerm"
+                        "type": "FIELD",
+                        "name": "expr",
+                        "content": {
+                          "type": "SYMBOL",
+                          "name": "_exprOrTerm"
+                        }
                       }
                     ]
                   }

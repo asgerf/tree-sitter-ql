@@ -159,28 +159,41 @@
   {
     "type": "aggregate",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "_exprOrTerm",
-          "named": true
-        },
-        {
-          "type": "aggId",
-          "named": true
-        },
-        {
-          "type": "expr_aggregate_body",
-          "named": true
-        },
-        {
-          "type": "full_aggregate_body",
-          "named": true
-        }
-      ]
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "expr_aggregate_body",
+            "named": true
+          },
+          {
+            "type": "full_aggregate_body",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "aggId",
+            "named": true
+          }
+        ]
+      },
+      "rank": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "_exprOrTerm",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -433,28 +446,41 @@
   {
     "type": "call_or_unqual_agg_expr",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "aritylessPredicateExpr",
-          "named": true
-        },
-        {
-          "type": "call_body",
-          "named": true
-        },
-        {
-          "type": "closure",
-          "named": true
-        },
-        {
-          "type": "unqual_agg_body",
-          "named": true
-        }
-      ]
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "call_body",
+            "named": true
+          },
+          {
+            "type": "unqual_agg_body",
+            "named": true
+          }
+        ]
+      },
+      "closure": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "closure",
+            "named": true
+          }
+        ]
+      },
+      "predicate": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "aritylessPredicateExpr",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1793,16 +1819,17 @@
   {
     "type": "set_literal",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "_exprOrTerm",
-          "named": true
-        }
-      ]
+    "fields": {
+      "expr": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "_exprOrTerm",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
