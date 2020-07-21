@@ -265,14 +265,14 @@ module.exports = grammar({
 
     // The split here is to ensure that the node is non-empty
     full_aggregate_body: $ => choice(
-      seq(sep($.varDecl, ","),
+      seq(sep(field("varDecl", $.varDecl), ","),
         seq(
           "|",
           optional($._exprOrTerm),
           optional(seq("|", $.asExprs, optional($._orderBys)))
         )
       ),
-      sep1($.varDecl, ","),
+      sep1(field("varDecl", $.varDecl), ","),
       ),
 
     expr_aggregate_body: $ => seq($.asExprs, optional($._orderBys)),
@@ -341,7 +341,11 @@ module.exports = grammar({
 
     bool: $ => choice($.true, $.false),
 
-    variable: $ => choice($.this, $.result, $.varName),
+    variable: $ => choice(
+      field("var", $.this),
+      field("var", $.result),
+      field("var", $.varName)
+    ),
 
     _compop: $ => choice($.eq, $.ne, $.lt, $.gt, $.le, $.ge),
 

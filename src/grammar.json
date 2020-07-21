@@ -2103,8 +2103,12 @@
                   "type": "SEQ",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "varDecl"
+                      "type": "FIELD",
+                      "name": "varDecl",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "varDecl"
+                      }
                     },
                     {
                       "type": "REPEAT",
@@ -2116,8 +2120,12 @@
                             "value": ","
                           },
                           {
-                            "type": "SYMBOL",
-                            "name": "varDecl"
+                            "type": "FIELD",
+                            "name": "varDecl",
+                            "content": {
+                              "type": "SYMBOL",
+                              "name": "varDecl"
+                            }
                           }
                         ]
                       }
@@ -2189,8 +2197,12 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "varDecl"
+              "type": "FIELD",
+              "name": "varDecl",
+              "content": {
+                "type": "SYMBOL",
+                "name": "varDecl"
+              }
             },
             {
               "type": "REPEAT",
@@ -2202,8 +2214,12 @@
                     "value": ","
                   },
                   {
-                    "type": "SYMBOL",
-                    "name": "varDecl"
+                    "type": "FIELD",
+                    "name": "varDecl",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "varDecl"
+                    }
                   }
                 ]
               }
@@ -2581,16 +2597,28 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "this"
+          "type": "FIELD",
+          "name": "var",
+          "content": {
+            "type": "SYMBOL",
+            "name": "this"
+          }
         },
         {
-          "type": "SYMBOL",
-          "name": "result"
+          "type": "FIELD",
+          "name": "var",
+          "content": {
+            "type": "SYMBOL",
+            "name": "result"
+          }
         },
         {
-          "type": "SYMBOL",
-          "name": "varName"
+          "type": "FIELD",
+          "name": "var",
+          "content": {
+            "type": "SYMBOL",
+            "name": "varName"
+          }
         }
       ]
     },

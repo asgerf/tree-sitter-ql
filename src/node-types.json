@@ -980,6 +980,16 @@
             "named": true
           }
         ]
+      },
+      "varDecl": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "varDecl",
+            "named": true
+          }
+        ]
       }
     },
     "children": {
@@ -992,10 +1002,6 @@
         },
         {
           "type": "asExprs",
-          "named": true
-        },
-        {
-          "type": "varDecl",
           "named": true
         }
       ]
@@ -2038,24 +2044,25 @@
   {
     "type": "variable",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "result",
-          "named": true
-        },
-        {
-          "type": "this",
-          "named": true
-        },
-        {
-          "type": "varName",
-          "named": true
-        }
-      ]
+    "fields": {
+      "var": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "result",
+            "named": true
+          },
+          {
+            "type": "this",
+            "named": true
+          },
+          {
+            "type": "varName",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
