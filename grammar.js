@@ -67,7 +67,7 @@ module.exports = grammar({
       field("returnType", choice($.predicate, $._typeExpr)),
       field("name", $.predicateName),
       choice(
-        seq("(", sep(field("parameter", $.varDecl), ","), ")", field("body", $._optbody)),
+        seq("(", sep(field("varDecl", $.varDecl), ","), ")", field("body", $._optbody)),
         field("body", $.predicateAliasBody)
       )
     ),
@@ -86,13 +86,13 @@ module.exports = grammar({
       optional(field("annotation", $.annotation)),
       field("name", $.className),
       "(",
-      sep(field("parameter", $.varDecl), ","),
+      sep(field("varDecl", $.varDecl), ","),
       ")",
       optional(field("body", $.body))
     ),
 
     select: $ => seq(
-      optional(seq("from", sep(field("parameter", $.varDecl), ","))),
+      optional(seq("from", sep(field("varDecl", $.varDecl), ","))),
       optional(seq("where", field("where", $._exprOrTerm))),
       seq('select', sep1(field("select", $.asExpr), ",")),
       optional($._orderBys)
@@ -126,7 +126,7 @@ module.exports = grammar({
       field("returnType", choice($.predicate, $._typeExpr)),
       field("name", $.predicateName),
       "(",
-      sep(field("parameter", $.varDecl), ","),
+      sep(field("varDecl", $.varDecl), ","),
       ")",
       $._optbody
     ),

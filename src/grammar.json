@@ -354,7 +354,7 @@
                       "members": [
                         {
                           "type": "FIELD",
-                          "name": "parameter",
+                          "name": "varDecl",
                           "content": {
                             "type": "SYMBOL",
                             "name": "varDecl"
@@ -371,7 +371,7 @@
                               },
                               {
                                 "type": "FIELD",
-                                "name": "parameter",
+                                "name": "varDecl",
                                 "content": {
                                   "type": "SYMBOL",
                                   "name": "varDecl"
@@ -526,7 +526,7 @@
               "members": [
                 {
                   "type": "FIELD",
-                  "name": "parameter",
+                  "name": "varDecl",
                   "content": {
                     "type": "SYMBOL",
                     "name": "varDecl"
@@ -543,7 +543,7 @@
                       },
                       {
                         "type": "FIELD",
-                        "name": "parameter",
+                        "name": "varDecl",
                         "content": {
                           "type": "SYMBOL",
                           "name": "varDecl"
@@ -602,7 +602,7 @@
                       "members": [
                         {
                           "type": "FIELD",
-                          "name": "parameter",
+                          "name": "varDecl",
                           "content": {
                             "type": "SYMBOL",
                             "name": "varDecl"
@@ -619,7 +619,7 @@
                               },
                               {
                                 "type": "FIELD",
-                                "name": "parameter",
+                                "name": "varDecl",
                                 "content": {
                                   "type": "SYMBOL",
                                   "name": "varDecl"
@@ -949,7 +949,7 @@
               "members": [
                 {
                   "type": "FIELD",
-                  "name": "parameter",
+                  "name": "varDecl",
                   "content": {
                     "type": "SYMBOL",
                     "name": "varDecl"
@@ -966,7 +966,7 @@
                       },
                       {
                         "type": "FIELD",
-                        "name": "parameter",
+                        "name": "varDecl",
                         "content": {
                           "type": "SYMBOL",
                           "name": "varDecl"

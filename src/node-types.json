@@ -606,16 +606,6 @@
           }
         ]
       },
-      "parameter": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "varDecl",
-            "named": true
-          }
-        ]
-      },
       "returnType": {
         "multiple": false,
         "required": true,
@@ -626,6 +616,16 @@
           },
           {
             "type": "predicate",
+            "named": true
+          }
+        ]
+      },
+      "varDecl": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "varDecl",
             "named": true
           }
         ]
@@ -867,22 +867,22 @@
           }
         ]
       },
-      "parameter": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "varDecl",
-            "named": true
-          }
-        ]
-      },
       "qldoc": {
         "multiple": false,
         "required": false,
         "types": [
           {
             "type": "qldoc",
+            "named": true
+          }
+        ]
+      },
+      "varDecl": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "varDecl",
             "named": true
           }
         ]
@@ -1236,16 +1236,6 @@
           }
         ]
       },
-      "parameter": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "varDecl",
-            "named": true
-          }
-        ]
-      },
       "returnType": {
         "multiple": false,
         "required": true,
@@ -1256,6 +1246,16 @@
           },
           {
             "type": "predicate",
+            "named": true
+          }
+        ]
+      },
+      "varDecl": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "varDecl",
             "named": true
           }
         ]
@@ -1779,22 +1779,22 @@
           }
         ]
       },
-      "parameter": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "varDecl",
-            "named": true
-          }
-        ]
-      },
       "select": {
         "multiple": true,
         "required": true,
         "types": [
           {
             "type": "asExpr",
+            "named": true
+          }
+        ]
+      },
+      "varDecl": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "varDecl",
             "named": true
           }
         ]
