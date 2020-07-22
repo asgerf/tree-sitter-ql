@@ -249,7 +249,7 @@ module.exports = grammar({
     ),
 
     call_body:$ => seq("(", sep(field("arg", $._call_arg), ","), ")"),
-    unqual_agg_body:$ => seq("(",  sep($.varDecl, ","), "|", optional($._exprOrTerm), optional(seq("|", $.asExprs)), ")"),
+    unqual_agg_body:$ => seq("(",  sep($.varDecl, ","), "|", optional($._exprOrTerm), optional(seq("|", $._asExprs)), ")"),
 
     _call_or_unqual_agg_body: $ => choice($.call_body, $.unqual_agg_body),
 
@@ -264,18 +264,20 @@ module.exports = grammar({
 
 
     // The split here is to ensure that the node is non-empty
-    full_aggregate_body: $ => choice(
+    _full_aggregate_body: $ => choice(
       seq(sep(field("varDecl", $.varDecl), ","),
         seq(
           "|",
-          optional($._exprOrTerm),
-          optional(seq("|", $.asExprs, optional($._orderBys)))
+          optional(field("formula", $._exprOrTerm)),
+          optional(seq("|", $._asExprs, optional($._orderBys)))
         )
       ),
       sep1(field("varDecl", $.varDecl), ","),
       ),
 
-    expr_aggregate_body: $ => seq($.asExprs, optional($._orderBys)),
+    _expr_aggregate_body: $ => seq($._asExprs, optional($._orderBys)),
+
+    aggregate_body: $ => choice($._full_aggregate_body, $._expr_aggregate_body),
 
     aggregate: $ => seq(
       field("name", $.aggId),                                                                // Agg
@@ -284,7 +286,7 @@ module.exports = grammar({
       ),
       "(",
       optional(
-        field("body", choice($.full_aggregate_body, $.expr_aggregate_body))
+        field("body", $.aggregate_body)
       ),
       ")"
     ),
@@ -361,9 +363,9 @@ module.exports = grammar({
 
     varDecl: $ => seq(field("type", $._typeExpr), field("name", $.varName)),
 
-    asExprs: $ => sep1($.asExpr, ","),
+    _asExprs: $ => sep1(field("asExpr", $.asExpr), ","),
 
-    asExpr: $ => seq($._exprOrTerm, optional(seq('as', $.varName))),
+    asExpr: $ => seq(field("expr", $._exprOrTerm), optional(seq('as', field("name", $.varName)))),
 
     _orderBys: $ => seq("order", "by", sep1(field("orderBy", $.orderBy), ",")),
 
@@ -422,7 +424,7 @@ module.exports = grammar({
 
     varName: $ => $.simpleId,
 
-    aggId: $ => choice('avg', 'concat', 'strictconcat', 'count', 'max', 'min', 'rank', 'strictcount', 'strictsum', 'sum', 'any'),
+    aggId: $ => field("name", choice('avg', 'concat', 'strictconcat', 'count', 'max', 'min', 'rank', 'strictcount', 'strictsum', 'sum', 'any')),
 
     _upper_id: $ => /[A-Z][A-Za-z0-9_]*/,
     _lower_id: $ => /[a-z][A-Za-z0-9_]*/,

@@ -1962,7 +1962,7 @@
                 },
                 {
                   "type": "SYMBOL",
-                  "name": "asExprs"
+                  "name": "_asExprs"
                 }
               ]
             },
@@ -2090,7 +2090,7 @@
         }
       ]
     },
-    "full_aggregate_body": {
+    "_full_aggregate_body": {
       "type": "CHOICE",
       "members": [
         {
@@ -2148,8 +2148,12 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "_exprOrTerm"
+                      "type": "FIELD",
+                      "name": "formula",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_exprOrTerm"
+                      }
                     },
                     {
                       "type": "BLANK"
@@ -2168,7 +2172,7 @@
                         },
                         {
                           "type": "SYMBOL",
-                          "name": "asExprs"
+                          "name": "_asExprs"
                         },
                         {
                           "type": "CHOICE",
@@ -2228,12 +2232,12 @@
         }
       ]
     },
-    "expr_aggregate_body": {
+    "_expr_aggregate_body": {
       "type": "SEQ",
       "members": [
         {
           "type": "SYMBOL",
-          "name": "asExprs"
+          "name": "_asExprs"
         },
         {
           "type": "CHOICE",
@@ -2246,6 +2250,19 @@
               "type": "BLANK"
             }
           ]
+        }
+      ]
+    },
+    "aggregate_body": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_full_aggregate_body"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_expr_aggregate_body"
         }
       ]
     },
@@ -2325,17 +2342,8 @@
               "type": "FIELD",
               "name": "body",
               "content": {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "full_aggregate_body"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "expr_aggregate_body"
-                  }
-                ]
+                "type": "SYMBOL",
+                "name": "aggregate_body"
               }
             },
             {
@@ -2741,12 +2749,16 @@
         }
       ]
     },
-    "asExprs": {
+    "_asExprs": {
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "asExpr"
+          "type": "FIELD",
+          "name": "asExpr",
+          "content": {
+            "type": "SYMBOL",
+            "name": "asExpr"
+          }
         },
         {
           "type": "REPEAT",
@@ -2758,8 +2770,12 @@
                 "value": ","
               },
               {
-                "type": "SYMBOL",
-                "name": "asExpr"
+                "type": "FIELD",
+                "name": "asExpr",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "asExpr"
+                }
               }
             ]
           }
@@ -2770,8 +2786,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "_exprOrTerm"
+          "type": "FIELD",
+          "name": "expr",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_exprOrTerm"
+          }
         },
         {
           "type": "CHOICE",
@@ -2784,8 +2804,12 @@
                   "value": "as"
                 },
                 {
-                  "type": "SYMBOL",
-                  "name": "varName"
+                  "type": "FIELD",
+                  "name": "name",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "varName"
+                  }
                 }
               ]
             },
@@ -3253,53 +3277,57 @@
       "name": "simpleId"
     },
     "aggId": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "avg"
-        },
-        {
-          "type": "STRING",
-          "value": "concat"
-        },
-        {
-          "type": "STRING",
-          "value": "strictconcat"
-        },
-        {
-          "type": "STRING",
-          "value": "count"
-        },
-        {
-          "type": "STRING",
-          "value": "max"
-        },
-        {
-          "type": "STRING",
-          "value": "min"
-        },
-        {
-          "type": "STRING",
-          "value": "rank"
-        },
-        {
-          "type": "STRING",
-          "value": "strictcount"
-        },
-        {
-          "type": "STRING",
-          "value": "strictsum"
-        },
-        {
-          "type": "STRING",
-          "value": "sum"
-        },
-        {
-          "type": "STRING",
-          "value": "any"
-        }
-      ]
+      "type": "FIELD",
+      "name": "name",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "avg"
+          },
+          {
+            "type": "STRING",
+            "value": "concat"
+          },
+          {
+            "type": "STRING",
+            "value": "strictconcat"
+          },
+          {
+            "type": "STRING",
+            "value": "count"
+          },
+          {
+            "type": "STRING",
+            "value": "max"
+          },
+          {
+            "type": "STRING",
+            "value": "min"
+          },
+          {
+            "type": "STRING",
+            "value": "rank"
+          },
+          {
+            "type": "STRING",
+            "value": "strictcount"
+          },
+          {
+            "type": "STRING",
+            "value": "strictsum"
+          },
+          {
+            "type": "STRING",
+            "value": "sum"
+          },
+          {
+            "type": "STRING",
+            "value": "any"
+          }
+        ]
+      }
     },
     "_upper_id": {
       "type": "PATTERN",

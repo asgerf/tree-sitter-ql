@@ -176,7 +176,58 @@
   {
     "type": "aggId",
     "named": true,
-    "fields": {}
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "any",
+            "named": false
+          },
+          {
+            "type": "avg",
+            "named": false
+          },
+          {
+            "type": "concat",
+            "named": false
+          },
+          {
+            "type": "count",
+            "named": false
+          },
+          {
+            "type": "max",
+            "named": false
+          },
+          {
+            "type": "min",
+            "named": false
+          },
+          {
+            "type": "rank",
+            "named": false
+          },
+          {
+            "type": "strictconcat",
+            "named": false
+          },
+          {
+            "type": "strictcount",
+            "named": false
+          },
+          {
+            "type": "strictsum",
+            "named": false
+          },
+          {
+            "type": "sum",
+            "named": false
+          }
+        ]
+      }
+    }
   },
   {
     "type": "aggregate",
@@ -187,11 +238,7 @@
         "required": false,
         "types": [
           {
-            "type": "expr_aggregate_body",
-            "named": true
-          },
-          {
-            "type": "full_aggregate_body",
+            "type": "aggregate_body",
             "named": true
           }
         ]
@@ -212,6 +259,52 @@
         "types": [
           {
             "type": "_exprOrTerm",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "aggregate_body",
+    "named": true,
+    "fields": {
+      "asExpr": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "asExpr",
+            "named": true
+          }
+        ]
+      },
+      "formula": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "_exprOrTerm",
+            "named": true
+          }
+        ]
+      },
+      "orderBy": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "orderBy",
+            "named": true
+          }
+        ]
+      },
+      "varDecl": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "varDecl",
             "named": true
           }
         ]
@@ -327,35 +420,27 @@
   {
     "type": "asExpr",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "_exprOrTerm",
-          "named": true
-        },
-        {
-          "type": "varName",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "asExprs",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "asExpr",
-          "named": true
-        }
-      ]
+    "fields": {
+      "expr": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_exprOrTerm",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "varName",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -926,32 +1011,6 @@
     "fields": {}
   },
   {
-    "type": "expr_aggregate_body",
-    "named": true,
-    "fields": {
-      "orderBy": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "orderBy",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "asExprs",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "field",
     "named": true,
     "fields": {
@@ -965,46 +1024,6 @@
           }
         ]
       }
-    }
-  },
-  {
-    "type": "full_aggregate_body",
-    "named": true,
-    "fields": {
-      "orderBy": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "orderBy",
-            "named": true
-          }
-        ]
-      },
-      "varDecl": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "varDecl",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "_exprOrTerm",
-          "named": true
-        },
-        {
-          "type": "asExprs",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -1980,17 +1999,24 @@
   {
     "type": "unqual_agg_body",
     "named": true,
-    "fields": {},
+    "fields": {
+      "asExpr": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "asExpr",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": false,
       "types": [
         {
           "type": "_exprOrTerm",
-          "named": true
-        },
-        {
-          "type": "asExprs",
           "named": true
         },
         {
