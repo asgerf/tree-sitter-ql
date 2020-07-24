@@ -2523,6 +2523,14 @@
         {
           "type": "SYMBOL",
           "name": "quantified"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "errorIncompleteModulePrefix"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "errorIncompleteQualifiedExpr"
         }
       ]
     },
@@ -3325,6 +3333,48 @@
           {
             "type": "STRING",
             "value": "any"
+          }
+        ]
+      }
+    },
+    "errorIncompleteModulePrefix": {
+      "type": "PREC",
+      "value": -1000,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "qualifier",
+            "content": {
+              "type": "SYMBOL",
+              "name": "moduleExpr"
+            }
+          },
+          {
+            "type": "STRING",
+            "value": "::"
+          }
+        ]
+      }
+    },
+    "errorIncompleteQualifiedExpr": {
+      "type": "PREC",
+      "value": -1000,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "lhs",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_primary"
+            }
+          },
+          {
+            "type": "STRING",
+            "value": "."
           }
         ]
       }

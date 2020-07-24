@@ -24,6 +24,14 @@
         "named": true
       },
       {
+        "type": "errorIncompleteModulePrefix",
+        "named": true
+      },
+      {
+        "type": "errorIncompleteQualifiedExpr",
+        "named": true
+      },
+      {
         "type": "if_term",
         "named": true
       },
@@ -1009,6 +1017,38 @@
     "type": "empty",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "errorIncompleteModulePrefix",
+    "named": true,
+    "fields": {
+      "qualifier": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "moduleExpr",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "errorIncompleteQualifiedExpr",
+    "named": true,
+    "fields": {
+      "lhs": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_primary",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "field",

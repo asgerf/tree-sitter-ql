@@ -319,6 +319,8 @@ module.exports = grammar({
       $.disjunction,
       $.implication,
       $.quantified,                         // QuantifiedTerm
+      $.errorIncompleteModulePrefix,
+      $.errorIncompleteQualifiedExpr,
     ),
 
     _primary: $ => choice(
@@ -418,7 +420,10 @@ module.exports = grammar({
 
     predicateName: $ => $._lower_id,
 
-    aritylessPredicateExpr: $ => seq(optional(seq(field("qualifier", $.moduleExpr), "::")), field("name", $.literalId)),
+    aritylessPredicateExpr: $ => seq(
+      optional(seq(field("qualifier", $.moduleExpr), "::")),
+      field("name", $.literalId)
+    ),
 
     predicateExpr: $ => seq(field("qualifiedName", $.aritylessPredicateExpr), $.slash, field("arity", $.integer)),
 
@@ -426,6 +431,15 @@ module.exports = grammar({
 
     aggId: $ => field("name", choice('avg', 'concat', 'strictconcat', 'count', 'max', 'min', 'rank', 'strictcount', 'strictsum', 'sum', 'any')),
 
+    // explicit error handling
+    errorIncompleteModulePrefix: $ => prec(-1000,
+      seq(field("qualifier", $.moduleExpr), "::")
+    ),
+    errorIncompleteQualifiedExpr: $ => prec(-1000,
+      seq(field("lhs", $._primary), ".")
+    ),
+
+    // tokens
     _upper_id: $ => /[A-Z][A-Za-z0-9_]*/,
     _lower_id: $ => /[a-z][A-Za-z0-9_]*/,
     integer: $ => /[0-9]+/,
