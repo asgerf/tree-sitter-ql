@@ -1038,12 +1038,20 @@
           "value": "{"
         },
         {
-          "type": "FIELD",
-          "name": "term",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_exprOrTerm"
-          }
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "term",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_exprOrTerm"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "STRING",
@@ -1202,7 +1210,7 @@
             "name": "type",
             "content": {
               "type": "SYMBOL",
-              "name": "_typeExpr"
+              "name": "_typeExprStrict"
             }
           },
           {
@@ -1827,6 +1835,35 @@
         }
       ]
     },
+    "errorIncompleteQualifiedCall": {
+      "type": "PREC",
+      "value": -1000,
+      "content": {
+        "type": "FIELD",
+        "name": "name",
+        "content": {
+          "type": "SYMBOL",
+          "name": "predicateName"
+        }
+      }
+    },
+    "errorIncompleteQualifiedCast": {
+      "type": "PREC",
+      "value": -1000,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "("
+          },
+          {
+            "type": "STRING",
+            "value": ")"
+          }
+        ]
+      }
+    },
     "_qualifiedRhs": {
       "type": "CHOICE",
       "members": [
@@ -1837,6 +1874,14 @@
         {
           "type": "SYMBOL",
           "name": "qualified_cast"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "errorIncompleteQualifiedCall"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "errorIncompleteQualifiedCast"
         }
       ]
     },
@@ -3210,6 +3255,27 @@
         {
           "type": "SYMBOL",
           "name": "primitiveType"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "errorIncompleteModulePrefix"
+        }
+      ]
+    },
+    "_typeExprStrict": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "namedTypeExpr"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "dbtype"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "primitiveType"
         }
       ]
     },
@@ -3354,6 +3420,22 @@
           {
             "type": "STRING",
             "value": "::"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "FIELD",
+                "name": "name",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_lower_id"
+                }
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
           }
         ]
       }

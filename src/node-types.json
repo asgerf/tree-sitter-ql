@@ -172,6 +172,10 @@
         "named": true
       },
       {
+        "type": "errorIncompleteModulePrefix",
+        "named": true
+      },
+      {
         "type": "namedTypeExpr",
         "named": true
       },
@@ -509,7 +513,7 @@
     "fields": {
       "term": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "_exprOrTerm",
@@ -1022,6 +1026,11 @@
     "type": "errorIncompleteModulePrefix",
     "named": true,
     "fields": {
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": []
+      },
       "qualifier": {
         "multiple": false,
         "required": true,
@@ -1033,6 +1042,27 @@
         ]
       }
     }
+  },
+  {
+    "type": "errorIncompleteQualifiedCall",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "predicateName",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "errorIncompleteQualifiedCast",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "errorIncompleteQualifiedExpr",
@@ -1626,7 +1656,15 @@
         "required": true,
         "types": [
           {
-            "type": "_typeExpr",
+            "type": "dbtype",
+            "named": true
+          },
+          {
+            "type": "namedTypeExpr",
+            "named": true
+          },
+          {
+            "type": "primitiveType",
             "named": true
           }
         ]
@@ -1748,6 +1786,14 @@
         "multiple": false,
         "required": true,
         "types": [
+          {
+            "type": "errorIncompleteQualifiedCall",
+            "named": true
+          },
+          {
+            "type": "errorIncompleteQualifiedCast",
+            "named": true
+          },
           {
             "type": "qualified_call",
             "named": true
@@ -2241,11 +2287,11 @@
   },
   {
     "type": "float",
-    "named": true
+    "named": false
   },
   {
     "type": "float",
-    "named": false
+    "named": true
   },
   {
     "type": "forall",

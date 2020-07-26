@@ -141,7 +141,7 @@ module.exports = grammar({
 
     empty: $ => ";",
 
-    body: $ => seq("{", field("term", $._exprOrTerm), "}"),
+    body: $ => seq("{", optional(field("term", $._exprOrTerm)), "}"),
 
     higherOrderTerm: $ => seq(
       $.eq,
@@ -155,7 +155,7 @@ module.exports = grammar({
     ),
 
     special_call: $ => seq(field("id", $.specialId), "(", ")"),
-    prefix_cast: $ => prec.dynamic(10, seq("(", field("type", $._typeExpr), ")", field("expr", $._exprOrTerm))),
+    prefix_cast: $ => prec.dynamic(10, seq("(", field("type", $._typeExprStrict), ")", field("expr", $._exprOrTerm))),
     unary_expr: $ => seq(field("operator", $.unop), field("expr", $._exprOrTerm)),
     binary_expr: $ => choice(
       $._mul_expr,
@@ -242,10 +242,15 @@ module.exports = grammar({
       field("type", $._typeExpr),
       ")"
     ),
+  
+    errorIncompleteQualifiedCall: $ => prec(-1000, field("name", $.predicateName)),
+    errorIncompleteQualifiedCast: $ => prec(-1000, seq("(", ")")),
 
     _qualifiedRhs: $ => choice(
       $.qualified_call,
-      $.qualified_cast
+      $.qualified_cast,
+      $.errorIncompleteQualifiedCall,
+      $.errorIncompleteQualifiedCast
     ),
 
     call_body:$ => seq("(", sep(field("arg", $._call_arg), ","), ")"),
@@ -415,7 +420,14 @@ module.exports = grammar({
     _typeExpr: $ => choice(
       $.namedTypeExpr,
       $.dbtype,
-      $.primitiveType
+      $.primitiveType,
+      $.errorIncompleteModulePrefix,
+    ),
+
+    _typeExprStrict: $ => choice(
+      $.namedTypeExpr,
+      $.dbtype,
+      $.primitiveType,
     ),
 
     predicateName: $ => $._lower_id,
@@ -433,7 +445,7 @@ module.exports = grammar({
 
     // explicit error handling
     errorIncompleteModulePrefix: $ => prec(-1000,
-      seq(field("qualifier", $.moduleExpr), "::")
+      seq(field("qualifier", $.moduleExpr), "::", optional(field("name", $._lower_id)))
     ),
     errorIncompleteQualifiedExpr: $ => prec(-1000,
       seq(field("lhs", $._primary), ".")
