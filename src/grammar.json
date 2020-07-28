@@ -1953,8 +1953,12 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "SYMBOL",
-                  "name": "varDecl"
+                  "type": "FIELD",
+                  "name": "varDecl",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "varDecl"
+                  }
                 },
                 {
                   "type": "REPEAT",
@@ -1966,8 +1970,12 @@
                         "value": ","
                       },
                       {
-                        "type": "SYMBOL",
-                        "name": "varDecl"
+                        "type": "FIELD",
+                        "name": "varDecl",
+                        "content": {
+                          "type": "SYMBOL",
+                          "name": "varDecl"
+                        }
                       }
                     ]
                   }
@@ -1987,8 +1995,12 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "_exprOrTerm"
+              "type": "FIELD",
+              "name": "formula",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_exprOrTerm"
+              }
             },
             {
               "type": "BLANK"

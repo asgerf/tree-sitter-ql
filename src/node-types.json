@@ -2095,21 +2095,27 @@
             "named": true
           }
         ]
+      },
+      "formula": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "_exprOrTerm",
+            "named": true
+          }
+        ]
+      },
+      "varDecl": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "varDecl",
+            "named": true
+          }
+        ]
       }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "_exprOrTerm",
-          "named": true
-        },
-        {
-          "type": "varDecl",
-          "named": true
-        }
-      ]
     }
   },
   {

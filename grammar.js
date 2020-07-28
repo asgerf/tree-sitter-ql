@@ -254,7 +254,14 @@ module.exports = grammar({
     ),
 
     call_body:$ => seq("(", sep(field("arg", $._call_arg), ","), ")"),
-    unqual_agg_body:$ => seq("(",  sep($.varDecl, ","), "|", optional($._exprOrTerm), optional(seq("|", $._asExprs)), ")"),
+    unqual_agg_body:$ => seq(
+      "(",
+      sep(field("varDecl", $.varDecl), ","),
+      "|",
+      optional(field("formula", $._exprOrTerm)),
+      optional(seq("|", $._asExprs)),
+      ")"
+    ),
 
     _call_or_unqual_agg_body: $ => choice($.call_body, $.unqual_agg_body),
 
