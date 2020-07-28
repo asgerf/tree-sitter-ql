@@ -1351,7 +1351,7 @@
             "name": "right",
             "content": {
               "type": "SYMBOL",
-              "name": "range"
+              "name": "_exprOrTerm"
             }
           }
         ]

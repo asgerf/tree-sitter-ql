@@ -1279,7 +1279,7 @@
         "required": true,
         "types": [
           {
-            "type": "range",
+            "type": "_exprOrTerm",
             "named": true
           }
         ]
