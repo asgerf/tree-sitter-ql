@@ -128,7 +128,7 @@ module.exports = grammar({
       "(",
       sep(field("varDecl", $.varDecl), ","),
       ")",
-      $._optbody
+      field("body", $._optbody)
     ),
 
     field: $ => seq(field("varDecl", $.varDecl), ";"),

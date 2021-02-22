@@ -987,8 +987,12 @@
           "value": ")"
         },
         {
-          "type": "SYMBOL",
-          "name": "_optbody"
+          "type": "FIELD",
+          "name": "body",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_optbody"
+          }
         }
       ]
     },

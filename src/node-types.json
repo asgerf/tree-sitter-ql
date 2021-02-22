@@ -1321,6 +1321,24 @@
     "type": "memberPredicate",
     "named": true,
     "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "body",
+            "named": true
+          },
+          {
+            "type": "empty",
+            "named": true
+          },
+          {
+            "type": "higherOrderTerm",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
@@ -1355,24 +1373,6 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "body",
-          "named": true
-        },
-        {
-          "type": "empty",
-          "named": true
-        },
-        {
-          "type": "higherOrderTerm",
-          "named": true
-        }
-      ]
     }
   },
   {
