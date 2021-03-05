@@ -108,7 +108,15 @@ module.exports = grammar({
       ))
     ),
 
-    dataclassBody: $ => seq('extends', sep1(field("baseType", $._typeExpr), ","), "{", repeat(field("member", $._classMember)), "}"),
+    dataclassBody: $ => seq(
+      'extends',
+      sep1(field("baseType", $._typeExpr), ","),
+      optional(seq(
+        "{",
+        repeat(field("member", $._classMember)),
+        "}"
+      )),
+    ),
 
     _classMember: $ => choice(
       $.classMember,
